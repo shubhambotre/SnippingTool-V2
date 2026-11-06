@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Backup / temp files
+*.bak
+*.tmp
+*.log
+
+# Editors / OS
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini

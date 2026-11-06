@@ -16,10 +16,15 @@ We have implemented a customized desktop alternative to the Windows Snipping Too
    - Unlimited **Undo** and **Redo** capabilities.
    - **Clear All** restores the original clean screenshot.
    - Operations are synced off-screen using vector draw operations, allowing you to edit dynamically on-screen while maintaining a high-fidelity image output.
-4. **Smart Configuration Persistence**:
+4. **Delete Confirmation Guard**:
+   - The delete (trash) button asks *"Delete the captured snippet?"* before discarding the image and all of its annotations.
+   - The popup defaults to **Cancel**, so pressing `Enter`/`Esc` accidentally never destroys your work.
+   - A **Preferences → "Ask for confirmation before deleting the captured snippet"** checkbox lets you turn the popup off for a fast, immediate delete.
+   - No popup is shown when the workspace is already empty.
+5. **Smart Configuration Persistence**:
    - Config file `.custom_snipping_tool_config.json` is stored in the user's home directory.
-   - Remembers the last-used color, tool, brush width, font size, fill mode, capture mode, default save path, and filename pattern.
-5. **Flexible File Management**:
+   - Remembers the last-used color, tool, brush width, font size, fill mode, capture mode, default save path, filename pattern, and the delete-confirmation preference.
+6. **Flexible File Management**:
    - Save path configuration (defaults to the system's `Pictures` directory).
    - Filename template patterns supporting placeholders:
      - `{datetime}`: formats timestamp as `YYYYMMDD_HHMMSS`.
@@ -60,3 +65,9 @@ Follow these steps to test the application locally on Windows:
    - Click **Save** to verify files are auto-saved to your default path.
    - Go to **Settings**, browse to a custom folder, change the naming pattern, choose **JPEG** or **BMP**, and save again.
    - Close the application, relaunch, and verify that your last configurations (colors, paths, settings) are loaded.
+6. **Delete confirmation**:
+   - Capture or open a snippet, then click the **delete (trash)** button in the toolbar → the *"Delete the captured snippet?"* popup appears.
+   - Click **Cancel** → the snippet stays on the canvas.
+   - Click **Delete** → the canvas is cleared and the launcher screen returns.
+   - Open **Settings**, untick *"Ask for confirmation before deleting the captured snippet"*, save, capture again, and delete → the snippet is removed instantly with no popup.
+   - Restart the app and confirm the unticked state persisted (tick it back on when done).

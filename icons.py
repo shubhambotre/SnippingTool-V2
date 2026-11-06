@@ -32,10 +32,14 @@ MDI_ICONS = {
     "undo": "M12.5 8c-2.65 0-5.05 1-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88c3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8",
     "settings": "M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5a3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64z",
     "collage": "M3 3h7v7H3V3m1 1v5h5V4H4m10-1h7v7h-7V3m1 1v5h5V4h-5M3 13h7v7H3v-7m1 1v5h5v-5H4m10-1h7v7h-7v-7m1 1v5h5v-5h-5z",
+    "folder": "M10 4H4c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z",
+    "folder_open": "M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5",
+    "open": "M19 20H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2h6l2 2h7a2 2 0 0 1 2 2H4v10l2.14-8h17.07l-2.28 8.5c-.23.87-1.01 1.5-1.93 1.5",
 }
 
 # The Select tool button is wired with icon name "pointer"; keep "select" as an alias.
 MDI_ICONS["select"] = MDI_ICONS["pointer"]
+MDI_ICONS["open_file"] = MDI_ICONS["folder_open"]
 
 
 # ---------------------------------------------------------------------------
@@ -317,52 +321,6 @@ def draw_vector_icon(draw, name, color, size):
     # Paste the rendered tile (with its alpha) onto the caller's image.
     draw._image.paste(tile, (0, 0), tile)
 
-
-def get_icon(name, color="#333333", size=(24, 24)):
-    """Generates and returns a Tkinter PhotoImage for the requested icon in Light/Dark themes."""
-    from PIL import ImageTk
-    key = (name, color, size)
-    if key in icon_cache:
-        return icon_cache[key]
-
-    img = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    draw_vector_icon(draw, name, color, size)
-
-    tk_img = ImageTk.PhotoImage(img)
-    icon_cache[key] = tk_img
-    return tk_img
-
-
-def get_button_image(name, icon_color, bg_color, border_color=None, size=(30, 30), icon_size=(16, 16)):
-    """Generates a PhotoImage containing a rounded rectangle background and the centered vector icon."""
-    from PIL import ImageTk
-    key = (name, icon_color, bg_color, border_color, size, icon_size)
-    if key in icon_cache:
-        return icon_cache[key]
-
-    w, h = size
-    img = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-
-    # Draw rounded background
-    if bg_color:
-        draw.rounded_rectangle([0, 0, w - 1, h - 1], radius=6, fill=bg_color)
-    if border_color:
-        draw.rounded_rectangle([0, 0, w - 1, h - 1], radius=6, outline=border_color, width=1)
-
-    # Create icon layer
-    icon_layer = Image.new("RGBA", icon_size, (0, 0, 0, 0))
-    icon_draw = ImageDraw.Draw(icon_layer)
-    draw_vector_icon(icon_draw, name, icon_color, icon_size)
-
-    # Paste icon layer centered on the button background
-    ix, iy = (w - icon_size[0]) // 2, (h - icon_size[1]) // 2
-    img.paste(icon_layer, (ix, iy), mask=icon_layer)
-
-    tk_img = ImageTk.PhotoImage(img)
-    icon_cache[key] = tk_img
-    return tk_img
 
 
 def pil_to_qpixmap(pil_img):

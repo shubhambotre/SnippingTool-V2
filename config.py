@@ -16,7 +16,8 @@ DEFAULT_SETTINGS = {
     "default_capture_mode": "free",
     "fixed_width": 800,
     "fixed_height": 600,
-    "theme": "light"
+    "theme": "light",
+    "confirm_before_delete": True
 }
 
 class AppConfig:
